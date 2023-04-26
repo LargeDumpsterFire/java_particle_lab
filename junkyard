@@ -1,0 +1,549 @@
+ // if(particleGrid[r][c] == WATER){
+            //     //if num = 1, go left. if 2, go right. if 3, go down break apart 
+            //     if ((( (c + 1) < particleGrid[0].length) && (c > 1)) && ((particleGrid[r + 1][c] == EMPTY))){
+                    
+            //         particleGrid[r][c] = EMPTY;
+
+            //         if((number == 0) && (particleGrid[r][c+1] == EMPTY)){
+            //             //right ceck
+            //             particleGrid[r][c + 1] = WATER;
+
+            //         }
+            //         else if((number == 1) && (particleGrid[r][c - 1] == EMPTY)){
+            //             //left check
+            //             particleGrid[r][c - 1] = WATER;
+
+
+            //         }
+            //         else if((number == 2) && (particleGrid[r + 1][c] == EMPTY)){
+            //             //down check
+            //             particleGrid[r + 1][c] = WATER;
+
+
+            //         }
+            //     }
+            //     else if (particleGrid[r + 1][c] == WATER && particleGrid[r][c + 1] == EMPTY ){
+
+            //         particleGrid[r][c] = EMPTY;
+
+            //         if((number == 0) && (particleGrid[r][c+1] == EMPTY)){
+            //             //right ceck
+            //             particleGrid[r][c + 1] = WATER;
+
+            //         }
+            //         else if((number == 1) && (particleGrid[r][c - 1] == EMPTY)){
+            //             //left check
+            //             particleGrid[r][c - 1] = WATER;
+
+
+            //         }
+            //         else if((number == 2) && (particleGrid[r + 1][c] == EMPTY)){
+            //             //down check
+            //             particleGrid[r + 1][c] = WATER;
+
+
+            //         }
+                }
+                //  if(particleGrid[r][c - 1] == WATER){
+
+                //     particleGrid[r][c] = EMPTY;
+
+                //     if((number == 0) && (particleGrid[r][c+1] == EMPTY)){
+                //         //right ceck
+                //         particleGrid[r][c + 1] = WATER;
+
+                //     }
+                //     else if((number == 1) && (particleGrid[r][c - 1] == EMPTY)){
+                //         //left check
+                //         particleGrid[r][c - 1] = WATER;
+
+
+                //     }
+                //     else if((number == 2) && (particleGrid[r + 1][c] == EMPTY)){
+                //         //down check
+                //         particleGrid[r + 1][c] = WATER;
+
+
+                    // }
+// if (r + 1 < particleGrid.length && particleGrid[r + 1][c] == EMPTY) {
+
+//                 particleGrid[r + 1][c] = particleGrid[r][c];
+//                 particleGrid[r][c] = EMPTY;
+
+//             }
+//             if (c + 1 < particleGrid.length && particleGrid[r][c + 1] == EMPTY) {
+
+//                 particleGrid[r][c + 1] = particleGrid[r][c];
+
+//                 particleGrid[r][c + 1] = particleGrid[r][c];
+
+//             }
+//             if (c - 1 < particleGrid.length && particleGrid[r][c - 1] == EMPTY) {
+
+//                 particleGrid[r][c - 1] = particleGrid[r][c];
+
+//                 particleGrid[r][c] = particleGrid[r][c];
+ if (particleGrid[row][col] == SAND) {
+            if (particleGrid[row][col] != EMPTY) {
+
+                // stops the pxel from dropping through ground
+                if (row + 1 >= NBR_ROWS) {
+
+                    return;
+
+                }
+
+            }
+            // need to fix pixel area check so that it doesn't fall through metal cracks
+            // this works now \(*-*)/
+            if (particleGrid[row + 1][col] == EMPTY) {
+
+                particleGrid[row + 1][col] = particleGrid[row][col];
+                particleGrid[row][col] = EMPTY;
+
+            }
+            // crashes the program if its out of bounds -1 out of bounds so mayb col < 0
+            // return? possibly fixed now // col - 1 >= 0 stops outof bounds error but
+            // creates a fake wall and stops wrapping
+            //col - 1 >= 0 going out of bounds error left
+            
+            if (col - 1 >= 0 && particleGrid[row + 1][col - 1] == EMPTY) {
+
+                particleGrid[row + 1][col - 1] = SAND;
+                particleGrid[row][col] = EMPTY;
+
+            }
+
+            // crashes error 180 out of bounds possily fixed now
+            //col + 1 < particleGrid[col].length stops it going out of bound
+            if (col + 1 < particleGrid[col].length && particleGrid[row + 1][col + 1] == EMPTY) {
+
+                particleGrid[row + 1][col + 1] = SAND;
+                particleGrid[row][col] = EMPTY;
+
+            }
+
+            // need to simplify also need to fix out of bound errors// errors might be fixed
+            // now keep testing and refinining
+            if (particleGrid[row + 1][col] == WATER) {
+
+                int tempararyPixel = particleGrid[row][col];// save sand place
+                particleGrid[row][col] = particleGrid[row + 1][col];// water to sand
+                particleGrid[row + 1][col] = tempararyPixel;// sand to water
+
+            }
+            if (col + 1 < particleGrid[col].length && particleGrid[row + 1][col + 1] == WATER) {
+
+                int tempararyPixel = particleGrid[row][col];// save sand place
+                particleGrid[row][col] = particleGrid[row + 1][col + 1];// water to sand
+                particleGrid[row + 1][col + 1] = tempararyPixel;// sand to water
+
+            }
+            if (col - 1 >= 0 && particleGrid[row + 1][col - 1] == WATER) {
+
+                int tempararyPixel = particleGrid[row][col];// save sand place
+                particleGrid[row][col] = particleGrid[row + 1][col - 1];// water to sand
+                particleGrid[row + 1][col - 1] = tempararyPixel;// sand to water
+
+            }
+            // }
+        }
+
+        // else if for the rest of the stuff you add
+        else if (particleGrid[row][col] == WATER) {// make this vapor and reverse the particle flow
+
+            if (row + 1 < particleGrid.length && particleGrid[row + 1][col] == EMPTY) {
+
+                particleGrid[row + 1][col] = WATER;
+                particleGrid[row][col] = EMPTY;
+
+            }
+            // left
+            if (col - 1 >= 0 && particleGrid[row][col - 1] == EMPTY) {
+
+                particleGrid[row][col - 1] = particleGrid[row][col];
+                particleGrid[row][col] = EMPTY;
+
+            }
+            // right
+            //col + 1 < particleGrid[col].length
+         if (col + 1 < particleGrid[col].length && particleGrid[row][col + 1] == EMPTY) {
+
+                particleGrid[row][col + 1] = particleGrid[row][col];
+                particleGrid[row][col] = EMPTY;
+
+            }
+
+        }
+
+    }
+    else if (particleGrid[row][col] == WATER) {// make this vapor and reverse the particle flow
+
+            if (row + 1 < particleGrid.length && particleGrid[row + 1][col] == EMPTY) {
+
+                particleGrid[row + 1][col] = WATER;
+                particleGrid[row][col] = EMPTY;
+
+            }
+            // left
+            if (col - 1 >= 0 && particleGrid[row][col - 1] == EMPTY) {
+
+                particleGrid[row][col - 1] = particleGrid[row][col];
+                particleGrid[row][col] = EMPTY;
+
+            }
+            // right
+            //col + 1 < particleGrid[col].length
+         if (col + 1 < particleGrid[col].length && particleGrid[row][col + 1] == EMPTY) {
+
+                particleGrid[row][col + 1] = particleGrid[row][col];
+                particleGrid[row][col] = EMPTY;
+
+            }
+
+        }
+        if(particleGrid[rp1][col] == METAL && particleGrid[row][cp1] == METAL && particleGrid[row][cm1] == METAL) {
+
+            return;
+
+        }
+
+        //off and on gravity
+        public void sandWithGravity(int row, int col, int rp1, int cp1, int cm1, int rm1){
+
+        if (particleGrid[rp1][col] == EMPTY && particleGrid[rp1][col] != METAL ) {
+
+            particleGrid[rp1][col] = SAND;
+            particleGrid[row][col] = EMPTY;
+            return;
+        }
+        // whatever the condition assume what everything else is
+
+        if (particleGrid[rp1][col] == SAND) {
+            if (particleGrid[rp1][cp1] != METAL && particleGrid[rp1][cp1] == EMPTY) {
+                particleGrid[rp1][cp1] = SAND;
+
+                particleGrid[row][col] = EMPTY;
+                return;
+            }
+            if (particleGrid[rp1][cm1] != METAL && particleGrid[rp1][cm1] == EMPTY) {
+
+                particleGrid[rp1][cm1] = SAND;
+
+                particleGrid[row][col] = EMPTY;
+                return;
+
+            }
+
+        }
+
+    }
+    public void sandWithoutGravity(int row, int col, int rp1, int cp1, int cm1, int rm1){
+
+        if (particleGrid[row][col] == SAND && particleGrid[row][col] != METAL) {
+           
+            if (particleGrid[rm1][col] == EMPTY && particleGrid[rm1][col] != METAL) {
+                particleGrid[rm1][col] = SAND;
+                particleGrid[row][col] = EMPTY;
+                return;
+            }
+            if (particleGrid[rm1][col] == SAND) {
+                if (particleGrid[rm1][cp1] != METAL && particleGrid[rm1][cp1] == EMPTY) {
+                    particleGrid[rm1][cp1] = SAND;
+
+                    particleGrid[row][col] = EMPTY;
+                    return;
+                }
+                if (particleGrid[rm1][cm1] != METAL && particleGrid[rm1][cm1] == EMPTY) {
+
+                    particleGrid[rm1][cm1] = SAND;
+
+                    particleGrid[row][col] = EMPTY;
+                    return;
+
+                }
+            }
+        }
+
+    }
+    public void processSand(int row, int col, int rp1, int cp1, int cm1, int rm1) {
+        //toggle boolean on or off an dhave it replace rm1 and rp1 
+        
+           
+         
+            sandWithGravity(row, col, rp1, cp1, cm1, rm1);
+           
+
+            // gravity = !gravity();
+
+            processSandInteractions(row, col, rp1, cp1, cm1, rm1);
+        
+    }
+if (row <= 0) {
+
+            rm1 = NBR_ROWS - 1;
+
+        } else {
+
+            rm1 = row - 1;
+
+        }
+        if (particleGrid[row][col] == ICE && particleGrid[row][col] != METAL) {
+
+            if (particleGrid[rm1][col] == EMPTY && particleGrid[rm1][col] != METAL) {
+
+                particleGrid[rm1][col] = ICE;
+                particleGrid[row][col] = EMPTY;
+                return;
+            }
+            if (particleGrid[rm1][col] == ICE) {
+                if (particleGrid[rm1][cp1] != METAL && particleGrid[rm1][cp1] == EMPTY) {
+                    particleGrid[rm1][cp1] = ICE;
+
+                    particleGrid[row][col] = EMPTY;
+                    return;
+                }
+            if (particleGrid[rm1][cm1] != METAL && particleGrid[rm1][cm1] == EMPTY) {
+
+                particleGrid[rm1][cm1] = ICE;
+
+                particleGrid[rm1][col] = EMPTY;
+                return;
+
+            }
+                
+
+            }
+        }
+                    // gravity = !gravity();
+boolean status = true;
+        if (gravity == true){
+
+            status = !gravity;
+
+        }
+        else if (status == gravity){
+
+            status = !gravity;
+
+        }
+
+        return status;
+    }
+    //
+     //     if (particleGrid[rm1][col] == WATER) {
+
+    //         particleGrid[row][col] = particleGrid[rm1][cm1];
+           
+    //         particleGrid[rm1][col] = ICE;
+
+    //     }
+    //    else if(gravity == false){
+    //     if (particleGrid[rm1][col] == WATER) {
+
+    //         particleGrid[row][col] = particleGrid[rm1][cm1];
+           
+    //         particleGrid[rm1][col] = ICE;
+
+    //     }
+    // }
+     //     if(particleGrid[rp1][col] == WATER){
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][col];
+        //     particleGrid[rm1][col] = tempararyPixel;
+       
+        //     }
+
+        //       if(particleGrid[row][cm1] == WATER){
+
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][cm1];
+        //     particleGrid[rm1][cm1] = tempararyPixel;
+       
+        // }
+        // if(particleGrid[row][cp1] == WATER){
+
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][cp1];
+        //     particleGrid[rm1][cp1] = tempararyPixel;
+       
+        // }
+        // if(particleGrid[rm1][col] == OIL){
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][col];
+        //     particleGrid[rm1][col] = tempararyPixel;
+       
+        //     }
+
+        //       if(particleGrid[row][cm1] == OIL){
+
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][cm1];
+        //     particleGrid[rm1][cm1] = tempararyPixel;
+       
+        // }
+        // if(particleGrid[row][cp1] == OIL){
+
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][cp1];
+        //     particleGrid[rm1][cp1] = tempararyPixel;
+       
+        // }
+        ////polumer
+        // if (particleGrid[rp1][col] == WATER) {
+
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][col];
+        //     particleGrid[rp1][col] = tempararyPixel;
+
+        // }
+        // if (particleGrid[rp1][cp1] == WATER) {
+
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][cp1];
+        //     particleGrid[rm1][cp1] = tempararyPixel;
+
+        // }
+
+        // if (particleGrid[rp1][cm1] == WATER) {
+
+        //     int tempararyPixel = particleGrid[row][col];
+        //     particleGrid[row][col] = particleGrid[rm1][cm1];
+        //     particleGrid[rm1][cm1] = tempararyPixel;
+        // }
+         // processOilAndWaterInteractions(row, col, rp1, cp1, cm1, rm1);
+            
+        }
+        
+    }
+    // have to refine this and comment 
+    public void processOilAndWaterInteractions(int row, int col, int rp1, int cp1,int cm1, int rm1){
+
+        
+        if (particleGrid[rm1][col] == WATER) {
+
+            int tempararyPixel = particleGrid[row][col];
+            particleGrid[row][col] = particleGrid[rm1][col];
+            particleGrid[rm1][col] = tempararyPixel;
+
+        }
+        if (particleGrid[rm1][cp1] == WATER) {
+
+            int tempararyPixel = particleGrid[row][col];
+            particleGrid[row][col] = particleGrid[rm1][cp1];
+            particleGrid[rm1][cp1] = tempararyPixel;
+
+        }
+
+        if (particleGrid[rm1][cm1] == WATER) {
+
+            int tempararyPixel = particleGrid[row][col];
+            particleGrid[row][col] = particleGrid[rm1][cm1];
+            particleGrid[rm1][cm1] = tempararyPixel;
+        }
+        if (particleGrid[row][cp1] == WATER) {
+
+            int tempararyPixel = particleGrid[row][col];
+            particleGrid[row][col] = particleGrid[row][cp1];
+            particleGrid[row][cp1] = tempararyPixel;
+        }
+
+        if (particleGrid[row][cm1] == WATER) {
+
+            int tempararyPixel = particleGrid[row][col];
+            particleGrid[row][col] = particleGrid[row][cm1];
+            particleGrid[row][cm1] = tempararyPixel;
+
+        }
+    }
+    
+    public int gravityToggle(int rp1, int rm1) {
+        int store = rm1;
+        if (!gravity) {
+
+            rp1 = store;
+            return rp1;
+
+        }else {
+
+            rp1 = rowPlusOne(rp1);
+
+            return rp1;
+
+        }
+
+    }
+    //dont need
+    public int gravityToggleRm1(int rp1, int rm1) {
+
+        int store = rp1;
+        if (!gravity) {
+
+            rm1 = store;
+            return rm1;
+
+        }else {
+
+            rm1 = rowMinusOne(rm1);
+
+            return rp1;
+
+        }
+    }
+    // for ice if (particleGrid[rp1][col] == WATER) {
+    
+                    // particleGrid[row][col] = particleGrid[rp1][col];
+                    particleGrid[rp1][col] = ICE;
+        
+                }
+                if (particleGrid[rm1][col] == WATER) {
+        
+                    // particleGrid[row][col] = particleGrid[rm1][cm1];
+                    particleGrid[rm1][col] = ICE;
+        
+                }
+                if (particleGrid[row][cp1] == WATER) {
+        
+                    // particleGrid[row][col] = particleGrid[rp1][cp1];
+                    particleGrid[rp1][cp1] = ICE;
+        
+                }
+                if (particleGrid[rp1][cm1] == WATER) {
+        
+                    // particleGrid[row][col] = particleGrid[rp1][cm1];
+                    particleGrid[rp1][cm1] = ICE;
+        
+                }
+        
+                if (particleGrid[rp1][col] == VAPOR) {
+        
+                    particleGrid[rp1][col] = WATER;
+        
+                }
+        
+            }
+            //more sand 
+            
+        int num = IR4.getRandomNumber(1,3);
+
+        if (particleGrid[row][col] == SAND) {
+
+            if (num == 1 && particleGrid[rp1][col] == EMPTY) {
+particleGrid[row][col] = EMPTY;
+                particleGrid[rp1][col] = SAND;
+                
+            }
+           else if ( num == 2 && particleGrid[row][cp1] == EMPTY) {
+                particleGrid[row][col] = EMPTY;
+
+                particleGrid[row][cp1] = SAND;
+
+            }
+
+           else if (num == 3 && particleGrid[row][cm1] == EMPTY) {
+                particleGrid[row][col] = EMPTY;
+
+                particleGrid[row][cm1] = SAND;
+                
+
+            }
